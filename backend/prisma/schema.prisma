@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Estado {
+  codigo_uf Int    @id
+  uf        String
+  nome      String
+  latitude  Float
+  longitude Float
+  regiao    String
+
+  municipios Municipio[]
+}
+
+model Municipio {
+  codigo_ibge Int     @id
+  nome        String
+  latitude    Float
+  longitude   Float
+  capital     Boolean
+  codigo_uf   Int
+
+  estado Estado @relation(fields: [codigo_uf], references: [codigo_uf])
+
+  camaAviaria          CamaAviaria[]
+  rochaFosfato         RochaFosfato[]
+  empresasFertilizante EmpresaFertilizante[]
+}
+
+model CamaAviaria {
+  id          Int       @id @default(autoincrement())
+  municipioId Int       @unique
+  municipio   Municipio @relation(fields: [municipioId], references: [codigo_ibge])
+}
+
+model RochaFosfato {
+  id          Int       @id @default(autoincrement())
+  municipioId Int       @unique
+  municipio   Municipio @relation(fields: [municipioId], references: [codigo_ibge])
+}
+
+model EmpresaFertilizante {
+  id          Int       @id @default(autoincrement())
+  nome        String
+  municipioId Int
+  municipio   Municipio @relation(fields: [municipioId], references: [codigo_ibge])
+}
