@@ -121,63 +121,6 @@ export default function Map() {
     }
   }, [cidadeCamaAviaria, cidadeRochaFosfato]);
 
-
-
-/**
- * 
- * UT
- */
-useEffect(() => {
-  if (cidadeCamaAviaria && cidadeRochaFosfato) {
-    const timeout = setTimeout(() => {
-      setCidadeCamaAviaria(null);
-      setCidadeRochaFosfato(null);
-      toast.success("Seleções resetadas automaticamente para novas escolhas.");
-    }, 10000); // 10 segundos após a seleção
-
-    return () => clearTimeout(timeout); // Limpa o timeout se o componente for desmontado
-  }
-}, [cidadeCamaAviaria, cidadeRochaFosfato]);
-
-const handleMarkerDoubleClickUT = (cidade: any) => {
-  if (isCamaAviaria(cidade)) {
-    if (
-      cidadeCamaAviaria &&
-      cidade.codigo_ibge === cidadeCamaAviaria.codigo_ibge
-    ) {
-      toast.custom("Você já escolheu esta cidade como Cama Aviária.");
-      return;
-    }
-    setCidadeCamaAviaria(cidade);
-    toast.success(
-      `${cidade.nome} - ${cidade.estado} definida como Cama Aviária.`
-    );
-    return;
-  }
-
-  if (isRochaFosfato(cidade)) {
-    if (
-      cidadeRochaFosfato &&
-      cidade.codigo_ibge === cidadeRochaFosfato.codigo_ibge
-    ) {
-      toast.custom("Você já escolheu esta cidade como Rocha Fosfato.");
-      return;
-    }
-    setCidadeRochaFosfato(cidade);
-    toast.success(
-      `${cidade.nome} - ${cidade.estado} definida como Rocha Fosfato.`
-    );
-    return;
-  }
-
-  toast.error(
-    "Esta cidade possui uma empresa de fertilizantes e não pode ser escolhida."
-  );
-};
-
-
-
-
   //funcao auxiliar - verifica se cidade é do tipo Cama Aviaria
   const isCamaAviaria = (cidade: any) => {
     return camaAviaria.some((item) => item.codigo_ibge === cidade.codigo_ibge);
@@ -185,7 +128,6 @@ const handleMarkerDoubleClickUT = (cidade: any) => {
   const isRochaFosfato = (cidade: any) => {
     return rochaFosfato.some((item) => item.codigo_ibge === cidade.codigo_ibge);
   };
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function handleMarkerDoubleClick(cidade: any) {
     if (isCamaAviaria(cidade)) {
       if (cidadeCamaAviaria) {
@@ -255,7 +197,7 @@ const handleMarkerDoubleClickUT = (cidade: any) => {
             position={[item.latitude, item.longitude]}
             icon={camaAviariaIcon}
             eventHandlers={{
-              dblclick: () => handleMarkerDoubleClickUT(item),
+              dblclick: () => handleMarkerDoubleClick(item),
             }}
           >
             <Popup>
@@ -273,7 +215,7 @@ const handleMarkerDoubleClickUT = (cidade: any) => {
             position={[item.latitude, item.longitude]}
             icon={rochaFosfatoIcon}
             eventHandlers={{
-              dblclick: () => handleMarkerDoubleClickUT(item),
+              dblclick: () => handleMarkerDoubleClick(item),
             }}
           >
             <Popup>
