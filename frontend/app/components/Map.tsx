@@ -68,16 +68,15 @@ export default function Map() {
     // fetchCamaAviaria().then(setCamaAviaria);
     // fetchRochaFosfato().then(setRochaFosfato);
 
-     fetchCamaAviaria().then((data) => {
-       console.log("Dados de Cama Aviária:", data); 
-       setCamaAviaria(data);
-     });
+    fetchCamaAviaria().then((data) => {
+      // console.log("Dados de Cama Aviária:", data);
+      setCamaAviaria(data);
+    });
 
-     fetchRochaFosfato().then((data) => {
-       console.log("Dados de Rocha Fosfato:", data);
-       setRochaFosfato(data);
-     });
-
+    fetchRochaFosfato().then((data) => {
+      // console.log("Dados de Rocha Fosfato:", data);
+      setRochaFosfato(data);
+    });
 
     fetchEmpresasFertilizantes().then((dados) => {
       const agrupadas = dados.reduce((acc: any, item: any) => {
@@ -121,62 +120,59 @@ export default function Map() {
     }
   }, [cidadeCamaAviaria, cidadeRochaFosfato]);
 
+  /**
+   *
+   * UT
+   */
+  useEffect(() => {
+    if (cidadeCamaAviaria && cidadeRochaFosfato) {
+      const timeout = setTimeout(() => {
+        setCidadeCamaAviaria(null);
+        setCidadeRochaFosfato(null);
+        toast.success(
+          "Seleções resetadas automaticamente para novas escolhas."
+        );
+      }, 10000); // 10 segundos após a seleção
 
+      return () => clearTimeout(timeout); // Limpa o timeout se o componente for desmontado
+    }
+  }, [cidadeCamaAviaria, cidadeRochaFosfato]);
 
-/**
- * 
- * UT
- */
-useEffect(() => {
-  if (cidadeCamaAviaria && cidadeRochaFosfato) {
-    const timeout = setTimeout(() => {
-      setCidadeCamaAviaria(null);
-      setCidadeRochaFosfato(null);
-      toast.success("Seleções resetadas automaticamente para novas escolhas.");
-    }, 10000); // 10 segundos após a seleção
-
-    return () => clearTimeout(timeout); // Limpa o timeout se o componente for desmontado
-  }
-}, [cidadeCamaAviaria, cidadeRochaFosfato]);
-
-const handleMarkerDoubleClickUT = (cidade: any) => {
-  if (isCamaAviaria(cidade)) {
-    if (
-      cidadeCamaAviaria &&
-      cidade.codigo_ibge === cidadeCamaAviaria.codigo_ibge
-    ) {
-      toast.custom("Você já escolheu esta cidade como Cama Aviária.");
+  const handleMarkerDoubleClickUT = (cidade: any) => {
+    if (isCamaAviaria(cidade)) {
+      if (
+        cidadeCamaAviaria &&
+        cidade.codigo_ibge === cidadeCamaAviaria.codigo_ibge
+      ) {
+        toast.custom("Você já escolheu esta cidade como Cama Aviária.");
+        return;
+      }
+      setCidadeCamaAviaria(cidade);
+      toast.success(
+        `${cidade.nome} - ${cidade.estado} definida como Cama Aviária.`
+      );
       return;
     }
-    setCidadeCamaAviaria(cidade);
-    toast.success(
-      `${cidade.nome} - ${cidade.estado} definida como Cama Aviária.`
-    );
-    return;
-  }
 
-  if (isRochaFosfato(cidade)) {
-    if (
-      cidadeRochaFosfato &&
-      cidade.codigo_ibge === cidadeRochaFosfato.codigo_ibge
-    ) {
-      toast.custom("Você já escolheu esta cidade como Rocha Fosfato.");
+    if (isRochaFosfato(cidade)) {
+      if (
+        cidadeRochaFosfato &&
+        cidade.codigo_ibge === cidadeRochaFosfato.codigo_ibge
+      ) {
+        toast.custom("Você já escolheu esta cidade como Rocha Fosfato.");
+        return;
+      }
+      setCidadeRochaFosfato(cidade);
+      toast.success(
+        `${cidade.nome} - ${cidade.estado} definida como Rocha Fosfato.`
+      );
       return;
     }
-    setCidadeRochaFosfato(cidade);
-    toast.success(
-      `${cidade.nome} - ${cidade.estado} definida como Rocha Fosfato.`
-    );
-    return;
-  }
-
-  toast.error(
-    "Esta cidade possui uma empresa de fertilizantes e não pode ser escolhida."
-  );
-};
-
-
-
+    //** TRECHO REMOVIDO TMP. Analisar comportamento (UT-> start:25/04/2025) */
+    // toast.error(
+    //   "Esta cidade possui uma de fertilizantes e não pode ser escolhida."
+    // );
+  };
 
   //funcao auxiliar - verifica se cidade é do tipo Cama Aviaria
   const isCamaAviaria = (cidade: any) => {
@@ -239,7 +235,7 @@ const handleMarkerDoubleClickUT = (cidade: any) => {
       {/* Mapa */}
       <MapContainer
         center={[-27.0, -50.0]}
-        zoom={6}
+        zoom={4}
         scrollWheelZoom={true}
         className="h-[100vh] w-full rounded-xl shadow-md z-0"
       >
