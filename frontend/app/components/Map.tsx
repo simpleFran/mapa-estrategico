@@ -23,6 +23,7 @@ import CitySelectRochaFosfato from "./CitySelectRochaFosfato";
 
 import Legend from "./Legend";
 import toast from "react-hot-toast";
+import DistanceSelector from "./DistanceSelector";
 
 // Ícones personalizados
 const camaAviariaIcon = new Icon({
@@ -63,21 +64,17 @@ export default function Map() {
   );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [maxDistance, setMaxDistance] = useState(200); // Valor inicial: 200 km
 
   useEffect(() => {
-    // fetchCamaAviaria().then(setCamaAviaria);
-    // fetchRochaFosfato().then(setRochaFosfato);
+    fetchCamaAviaria().then((data) => {
+      setCamaAviaria(data);
+    });
 
-     fetchCamaAviaria().then((data) => {
-       console.log("Dados de Cama Aviária:", data); 
-       setCamaAviaria(data);
-     });
-
-     fetchRochaFosfato().then((data) => {
-       console.log("Dados de Rocha Fosfato:", data);
-       setRochaFosfato(data);
-     });
-
+    fetchRochaFosfato().then((data) => {
+      // console.log("Dados de Rocha Fosfato:", data);
+      setRochaFosfato(data);
+    });
 
     fetchEmpresasFertilizantes().then((dados) => {
       const agrupadas = dados.reduce((acc: any, item: any) => {
@@ -106,10 +103,11 @@ export default function Map() {
       setError(null);
       fetchSugestoes(
         cidadeCamaAviaria.codigo_ibge,
-        cidadeRochaFosfato.codigo_ibge
+        cidadeRochaFosfato.codigo_ibge,
+        maxDistance * 1000 //Converte Km para metros
       )
         .then((res) => {
-          console.log("Resposta do backend:", res); // Log para depuração
+          console.log("- Resposta do backend:", res); // Log para depuração
           setSugestoes(res.sugestoes);
           setRotaCoordenadas(res.rotasCoordenadas); // Atualiza as coordenadas da rota
         })
@@ -119,79 +117,29 @@ export default function Map() {
         })
         .finally(() => setLoading(false));
     }
+  }, [cidadeCamaAviaria, cidadeRochaFosfato, maxDistance]);
+
+  useEffect(() => {
+    if (cidadeCamaAviaria && cidadeRochaFosfato) {
+      const timeout = setTimeout(() => {
+        setCidadeCamaAviaria(null);
+        setCidadeRochaFosfato(null);
+        toast.success(
+          "Seleções resetadas automaticamente para novas escolhas."
+        );
+      }, 10000); // 10 segundos após a seleção
+
+      return () => clearTimeout(timeout); // Limpa o timeout se o componente for desmontado
+    }
   }, [cidadeCamaAviaria, cidadeRochaFosfato]);
 
-
-
-/**
- * 
- * UT
- */
-useEffect(() => {
-  if (cidadeCamaAviaria && cidadeRochaFosfato) {
-    const timeout = setTimeout(() => {
-      setCidadeCamaAviaria(null);
-      setCidadeRochaFosfato(null);
-      toast.success("Seleções resetadas automaticamente para novas escolhas.");
-    }, 10000); // 10 segundos após a seleção
-
-    return () => clearTimeout(timeout); // Limpa o timeout se o componente for desmontado
-  }
-}, [cidadeCamaAviaria, cidadeRochaFosfato]);
-
-const handleMarkerDoubleClickUT = (cidade: any) => {
-  if (isCamaAviaria(cidade)) {
-    if (
-      cidadeCamaAviaria &&
-      cidade.codigo_ibge === cidadeCamaAviaria.codigo_ibge
-    ) {
-      toast.custom("Você já escolheu esta cidade como Cama Aviária.");
-      return;
-    }
-    setCidadeCamaAviaria(cidade);
-    toast.success(
-      `${cidade.nome} - ${cidade.estado} definida como Cama Aviária.`
-    );
-    return;
-  }
-
-  if (isRochaFosfato(cidade)) {
-    if (
-      cidadeRochaFosfato &&
-      cidade.codigo_ibge === cidadeRochaFosfato.codigo_ibge
-    ) {
-      toast.custom("Você já escolheu esta cidade como Rocha Fosfato.");
-      return;
-    }
-    setCidadeRochaFosfato(cidade);
-    toast.success(
-      `${cidade.nome} - ${cidade.estado} definida como Rocha Fosfato.`
-    );
-    return;
-  }
-
-  toast.error(
-    "Esta cidade possui uma empresa de fertilizantes e não pode ser escolhida."
-  );
-};
-
-
-
-
-  //funcao auxiliar - verifica se cidade é do tipo Cama Aviaria
-  const isCamaAviaria = (cidade: any) => {
-    return camaAviaria.some((item) => item.codigo_ibge === cidade.codigo_ibge);
-  };
-  const isRochaFosfato = (cidade: any) => {
-    return rochaFosfato.some((item) => item.codigo_ibge === cidade.codigo_ibge);
-  };
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  function handleMarkerDoubleClick(cidade: any) {
+  const handleMarkerDoubleClickUT = (cidade: any) => {
     if (isCamaAviaria(cidade)) {
-      if (cidadeCamaAviaria) {
-        toast.error(
-          "Você já escolheu uma cidade com Cama Aviária. Escolha uma cidade com Rocha de Fosfato."
-        );
+      if (
+        cidadeCamaAviaria &&
+        cidade.codigo_ibge === cidadeCamaAviaria.codigo_ibge
+      ) {
+        toast.custom("Você já escolheu esta cidade como Cama Aviária.");
         return;
       }
       setCidadeCamaAviaria(cidade);
@@ -202,10 +150,11 @@ const handleMarkerDoubleClickUT = (cidade: any) => {
     }
 
     if (isRochaFosfato(cidade)) {
-      if (cidadeRochaFosfato) {
-        toast.error(
-          "Você já escolheu uma cidade com Rocha Fosfato. Escolha uma cidade com Cama Aviária."
-        );
+      if (
+        cidadeRochaFosfato &&
+        cidade.codigo_ibge === cidadeRochaFosfato.codigo_ibge
+      ) {
+        toast.custom("Você já escolheu esta cidade como Rocha Fosfato.");
         return;
       }
       setCidadeRochaFosfato(cidade);
@@ -214,12 +163,50 @@ const handleMarkerDoubleClickUT = (cidade: any) => {
       );
       return;
     }
+  };
 
-    // Se a cidade não for nem Cama Aviária nem Rocha Fosfato, assumimos que é uma empresa de fertilizantes
-    toast.error(
-      "Esta cidade possui uma empresa de fertilizantes e não pode ser escolhida."
-    );
-  }
+  //funcao auxiliar - verifica se cidade é do tipo Cama Aviaria
+  const isCamaAviaria = (cidade: any) => {
+    return camaAviaria.some((item) => item.codigo_ibge === cidade.codigo_ibge);
+  };
+  const isRochaFosfato = (cidade: any) => {
+    return rochaFosfato.some((item) => item.codigo_ibge === cidade.codigo_ibge);
+  };
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // function handleMarkerDoubleClick(cidade: any) {
+  //   if (isCamaAviaria(cidade)) {
+  //     if (cidadeCamaAviaria) {
+  //       toast.error(
+  //         "Você já escolheu uma cidade com Cama Aviária. Escolha uma cidade com Rocha de Fosfato."
+  //       );
+  //       return;
+  //     }
+  //     setCidadeCamaAviaria(cidade);
+  //     toast.success(
+  //       `${cidade.nome} - ${cidade.estado} definida como Cama Aviária.`
+  //     );
+  //     return;
+  //   }
+
+  //   if (isRochaFosfato(cidade)) {
+  //     if (cidadeRochaFosfato) {
+  //       toast.error(
+  //         "Você já escolheu uma cidade com Rocha Fosfato. Escolha uma cidade com Cama Aviária."
+  //       );
+  //       return;
+  //     }
+  //     setCidadeRochaFosfato(cidade);
+  //     toast.success(
+  //       `${cidade.nome} - ${cidade.estado} definida como Rocha Fosfato.`
+  //     );
+  //     return;
+  //   }
+
+  //   // Se a cidade não for nem Cama Aviária nem Rocha Fosfato, assumimos que é uma empresa de fertilizantes
+  //   toast.error(
+  //     "Esta cidade possui uma empresa de fertilizantes e não pode ser escolhida."
+  //   );
+  // }
 
   return (
     <>
@@ -232,6 +219,13 @@ const handleMarkerDoubleClickUT = (cidade: any) => {
           Cidades | Rocha de Fosfato:
         </label>
         <CitySelectRochaFosfato onChange={setCidadeRochaFosfato} />
+
+        <div className="mt-4">
+          <DistanceSelector
+            initialDistance={maxDistance}
+            onDistanceChange={setMaxDistance}
+          />
+        </div>
       </div>
 
       <Legend />
@@ -239,7 +233,7 @@ const handleMarkerDoubleClickUT = (cidade: any) => {
       {/* Mapa */}
       <MapContainer
         center={[-27.0, -50.0]}
-        zoom={6}
+        zoom={4}
         scrollWheelZoom={true}
         className="h-[100vh] w-full rounded-xl shadow-md z-0"
       >
@@ -321,7 +315,11 @@ const handleMarkerDoubleClickUT = (cidade: any) => {
                 {item.nome},{item.estado.uf}
               </strong>
               <br />
-              {Number(item.distancia) / 1000} km
+              {(Number(item.distancia) / 1000).toLocaleString("pt-BR", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}{" "}
+              km
             </Popup>
           </Marker>
         ))}

@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -19,12 +19,15 @@ model Estado {
 }
 
 model Municipio {
-  codigo_ibge Int     @id
-  nome        String
-  latitude    Float
-  longitude   Float
-  capital     Boolean
-  codigo_uf   Int
+  codigo_ibge  Int     @id
+  nome         String
+  latitude     Float
+  longitude    Float
+  capital      Int?
+  siafi_id     Int?
+  ddd          Int?
+  fuso_horario String?
+  codigo_uf    Int
 
   estado Estado @relation(fields: [codigo_uf], references: [codigo_uf])
 
