@@ -86,9 +86,9 @@ export const sugerirRotasUT = async (
   }
 };
 
-
+//por rodovia com o ORS
 export const sugerirRotasORS = async (req: Request, res: Response) => {
-  const { cidadeXId, cidadeYId } = req.query;
+  const { cidadeXId, cidadeYId, maxDistance } = req.query;
   console.log("Coordenadas da cidadeX:", cidadeXId);
   console.log("Coordenadas da cidadeY:", cidadeYId);
 
@@ -106,7 +106,7 @@ export const sugerirRotasORS = async (req: Request, res: Response) => {
       return;
     }
 
-    // 🔥 Requisição principal (rota X -> Y)
+    // Requisição principal 
     const rotaORS = await axios.post(
       "https://api.openrouteservice.org/v2/directions/driving-car",
       {
@@ -149,10 +149,10 @@ export const sugerirRotasORS = async (req: Request, res: Response) => {
 
     // Decodificar a geometria com o polyline
     const coordenadas = polyline.decode(route.geometry);
-    console.log("Coordenadas decodificadas:", coordenadas);
+    // console.log("Coordenadas decodificadas:", coordenadas);
 
     if (coordenadas.length === 0) {
-      console.error("Coordenadas vazias na rota principal.");
+      // console.error("Coordenadas vazias na rota principal.");
       res.status(500).json({ error: "Sem coordenadas na rota principal." });
       return;
     }
@@ -168,8 +168,8 @@ export const sugerirRotasORS = async (req: Request, res: Response) => {
     const pontoMedio = { latitude: lat, longitude: long };
     console.log("Ponto médio calculado:", pontoMedio);
 
-    // 🔎 Buscar cidades candidatas
-    const cidadesCandidatas = await getTop10CidadesCandidatas(cidadeX, cidadeY);
+    // cidades candidatas
+    const cidadesCandidatas = await getTop10CidadesCandidatas(cidadeX, cidadeY, Number(maxDistance) || 200_000);
 
     console.time("tempoTotalRotas");
 
@@ -199,7 +199,10 @@ export const sugerirRotasORS = async (req: Request, res: Response) => {
           rotaData.routes.length > 0
         ) {
           const distancia = rotaData.routes[0].summary.distance;
-          if (distancia <= 200_000) {
+
+          //Usar o maxDistance recebido via query string
+          const distanciaLimite = Number(maxDistance) || 200_000; //Padrão: 200 km
+          if (distancia <= distanciaLimite) {
             return { ...cidade, distancia };
           }
         } else {
@@ -241,4 +244,3 @@ export const sugerirRotasORS = async (req: Request, res: Response) => {
 };
 
 
-// sudo kill -9 5154  && kill -9 51237

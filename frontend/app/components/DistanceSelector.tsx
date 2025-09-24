@@ -1,29 +1,37 @@
-'use client'
-import { useState } from "react";
+import React, { useState } from "react";
 
 interface DistanceSelectorProps {
-  onDistanceChange: (distanceInMeters: number) => void;
+  initialDistance: number; // Distância inicial em km
+  onDistanceChange: (newDistance: number) => void; // Função para notificar o componente pai
 }
 
-export const DistanceSelector = ({ onDistanceChange }: DistanceSelectorProps) => {
-  const [distance, setDistance] = useState(200); // Limite inicial: 200 km
+const DistanceSelector: React.FC<DistanceSelectorProps> = ({
+  initialDistance,
+  onDistanceChange,
+}) => {
+  const [distance, setDistance] = useState(initialDistance);
 
   const handleDistanceChange = (newDistance: number) => {
     setDistance(newDistance);
-    onDistanceChange(newDistance * 1000); // Converte km para metros
+    onDistanceChange(newDistance);
   };
 
   return (
-    <div>
-      <label>Distância máxima: {distance} km</label>
+    <div className="flex flex-col items-center space-y-2">
+      <label className="text-sm font-medium">
+        Distância Máxima: {distance} km
+      </label>
       <input
         type="range"
         min="200"
-        max="500"
+        max="600"
         step="50"
         value={distance}
         onChange={(e) => handleDistanceChange(Number(e.target.value))}
+        className="w-full"
       />
     </div>
   );
 };
+
+export default DistanceSelector;

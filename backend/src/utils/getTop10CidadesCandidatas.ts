@@ -10,12 +10,13 @@ type Candidata = {
   estado: {
     uf: string;
   };
-  distancia: number;
+  distancia: number; //Distancia ate o ponto médio
 };
 
 export const getTop10CidadesCandidatas = async (
   cidadeX: Municipio,
-  cidadeY: Municipio
+  cidadeY: Municipio,
+  distanciaMaxima: number = 200_000 // Padrão: 200 km (está em metros)
 ): Promise<Candidata[]> => {
   // 1. Calcular o ponto médio entre cidadeX e cidadeY
   const pontoMedio = {
@@ -23,7 +24,7 @@ export const getTop10CidadesCandidatas = async (
     longitude: (cidadeX.longitude + cidadeY.longitude) / 2,
   };
 
-  // 2. Buscar cidades válidas com todos os filtros de domínio
+  // 2. Buscar cidades válidas com todos os filtros 
   const cidadesFiltradas = await prisma.municipio.findMany({
     where: {
       AND: [
@@ -46,14 +47,16 @@ export const getTop10CidadesCandidatas = async (
     },
   });
 
-  // 3. Calcular distância até o ponto médio
-  const candidatas = cidadesFiltradas.map((cidade) => {
-    const distancia = getDistance(
-      { latitude: cidade.latitude, longitude: cidade.longitude },
-      pontoMedio
-    );
-    return { ...cidade, distancia };
-  });
+  // 3. Calcular distância até o ponto médio e filtar por distancia maxima
+  const candidatas = cidadesFiltradas
+    .map((cidade) => {
+      const distancia = getDistance(
+        { latitude: cidade.latitude, longitude: cidade.longitude },
+        pontoMedio
+      );
+      return { ...cidade, distancia };
+    })
+    .filter((cidade) => cidade.distancia <= distanciaMaxima); // Filtrar por distância máxima
 
   // 4. Ordenar por distância crescente e pegar as 10 mais próximas
   const top10 = candidatas

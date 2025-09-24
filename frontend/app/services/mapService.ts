@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-const BASE_URL = "http://localhost:8081/api"; // URL base da AP
-
+const BASE_URL = "http://localhost:4000/api"; // URL base da AP
 
 export async function fetchCamaAviaria() {
   const res = await fetch(`${BASE_URL}/cama-aviaria`);
@@ -26,14 +25,20 @@ export async function fetchEmpresasFertilizantes() {
   return res.json();
 }
 
-export async function fetchSugestoes(origemId: number, destinoId: number) {
+export async function fetchSugestoes(
+  origemId: number,
+  destinoId: number,
+  maxDistance?: number
+) {
   try {
     const res = await fetch(
-      `${BASE_URL}/sugestao-ors?cidadeXId=${origemId}&cidadeYId=${destinoId}`,
+      `${BASE_URL}/sugestao-ors?cidadeXId=${origemId}&cidadeYId=${destinoId}&maxDistance=${
+        maxDistance || ""
+      }`,
       {
-        headers:{
+        headers: {
           Authorization: `Bearer theWinterIsComing_Map`,
-        }
+        },
       }
     );
     if (!res.ok) throw new Error("Erro ao buscar sugestões");
@@ -43,7 +48,6 @@ export async function fetchSugestoes(origemId: number, destinoId: number) {
     return [];
   }
 }
-
 
 export async function fetchCidadesOrigemDestino() {
   const [cama, rocha] = await Promise.all([

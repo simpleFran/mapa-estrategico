@@ -1,0 +1,132 @@
+{
+  "Municipio": [
+    {
+      "codigo_ibge": 1100015,
+      "nome": "Alta Floresta D'Oeste",
+      "latitude": -11.9283,
+      "longitude": -61.9953,
+      "capital": false,
+      "codigo_uf": 11
+    },
+    {
+      "codigo_ibge": 1100023,
+      "nome": "Ariquemes",
+      "latitude": -9.90571,
+      "longitude": -63.0325,
+      "capital": false,
+      "codigo_uf": 11
+    },
+    {
+      "codigo_ibge": 1100031,
+      "nome": "Cabixi",
+      "latitude": -13.4945,
+      "longitude": -60552,
+      "capital": false,
+      "codigo_uf": 11
+    },
+    {
+      "codigo_ibge": 1100049,
+      "nome": "Cacoal",
+      "latitude": -11.4343,
+      "longitude": -61.4562,
+      "capital": false,
+      "codigo_uf": 11
+    },
+    {
+      "codigo_ibge": 1100064,
+      "nome": "Colorado do Oeste",
+      "latitude": -13.1174,
+      "longitude": -60.5454,
+      "capital": false,
+      "codigo_uf": 11
+    },
+    {
+      "codigo_ibge": 1100072,
+      "nome": "Corumbiara",
+      "latitude": -12.9551,
+      "longitude": -60.8947,
+      "capital": false,
+      "codigo_uf": 11
+    },
+    {
+      "codigo_ibge": 1100080,
+      "nome": "Costa Marques",
+      "latitude": -12.4367,
+      "longitude": -64228,
+      "capital": false,
+      "codigo_uf": 11
+    },
+    {
+      "codigo_ibge": 1100098,
+      "nome": "Espigão D'Oeste",
+      "latitude": -11.5266,
+      "longitude": -61.0252,
+      "capital": false,
+      "codigo_uf": 11
+    },
+    {
+      "codigo_ibge": 1100106,
+      "nome": "Guajará-Mirim",
+      "latitude": -10.7889,
+      "longitude": -65.3296,
+      "capital": false,
+      "codigo_uf": 11
+    },
+    {
+      "codigo_ibge": 1100114,
+      "nome": "Jaru",
+      "latitude": -10.4318,
+      "longitude": -62.4788,
+      "capital": false,
+      "codigo_uf": 11
+    },
+    {
+      "codigo_ibge": 1100122,
+      "nome": "Ji-Paraná",
+      "latitude": -10.8777,
+      "longitude": -61.9322,
+      "capital": false,
+      "codigo_uf": 11
+    },
+    {
+      "codigo_ibge": 1100130,
+      "nome": "Machadinho D'Oeste",
+      "latitude": -9.44363,
+      "longitude": -61.9818,
+      "capital": false,
+      "codigo_uf": 11
+    },
+    {
+      "codigo_ibge": 1100148,
+      "nome": "Nova Brasilândia D'Oeste",
+      "latitude": -11.7247,
+      "longitude": -62.3127,
+      "capital": false,
+      "codigo_uf": 11
+    },
+    {
+      "codigo_ibge": 1100155,
+      "nome": "Ouro Preto do Oeste",
+      "latitude": -10.7167,
+      "longitude": -62.2565,
+      "capital": false,
+      "codigo_uf": 11
+    },
+    {
+      "codigo_ibge": 1100189,
+      "nome": "Pimenta Bueno",
+      "latitude": -11672,
+      "longitude": -61198,
+      "capital": false,
+      "codigo_uf": 11
+    },
+    {
+      "codigo_ibge": 1100205,
+      "nome": "Porto Velho",
+      "latitude": -8.76077,
+      "longitude": -63.8999,
+      "capital": false,
+      "codigo_uf": 11
+    }
+]
+}
