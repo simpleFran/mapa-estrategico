@@ -4,4 +4,4 @@ node_modules
 NOTES.MD
 data
 coverage
-dist
+backend/dist
