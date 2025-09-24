@@ -1,0 +1,68 @@
+# =================================
+# Monorepo: mapa-estrategico
+# =================================
+
+# -----------------------
+# Backend
+# -----------------------
+# Node.js dependencies
+/backend/node_modules
+
+# Build/output
+/backend/dist
+
+# Env files
+/backend/.env
+/backend/.env.local
+/backend/.env.example
+
+# Logs / debug
+/backend/npm-debug.log*
+/backend/yarn-debug.log*
+/backend/yarn-error.log*
+
+# Typescript
+/backend/tsconfig.tsbuildinfo
+
+# Prisma temporary / data files
+/backend/prisma/data.json
+# Migrations: 
+/backend/prisma/migrations/migration_lock.toml
+
+# -----------------------
+# Frontend
+# -----------------------
+# Node.js dependencies
+/frontend/node_modules
+/frontend/.pnp
+/frontend/.pnp.*
+/frontend/.yarn/*
+!/frontend/.yarn/patches
+!/frontend/.yarn/plugins
+!/frontend/.yarn/releases
+!/frontend/.yarn/versions
+
+# Build/output
+/frontend/.next/
+/frontend/out/
+/frontend/build
+
+# Testing
+/frontend/coverage
+
+# Env files
+/frontend/.env*
+
+# Logs / debug
+/frontend/npm-debug.log*
+/frontend/yarn-debug.log*
+/frontend/yarn-error.log*
+
+# Misc
+.DS_Store
+*.pem
+/frontend/next-env.d.ts
+NOTES.MD
+
+# Vercel
+/frontend/.vercel
