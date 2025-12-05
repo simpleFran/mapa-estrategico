@@ -15,9 +15,15 @@ async function main() {
     // await prisma.municipio.deleteMany()
     // await prisma.estado.deleteMany()
 
+    // await prisma.estado.updateMany({
+    //   where: {codigo_uf: -1}, // condição impossível
+    //   data: {_data.Estado[0].codigo_uf},
+    //   skipDuplicates: true,
+    // });
+
     await prisma.estado.createMany({
       data: _data.Estado,
-      skipDuplicates: true, // <- Muito importante no docker!
+      skipDuplicates: true, 
     });
 
     await prisma.municipio.createMany({
@@ -40,9 +46,9 @@ async function main() {
       skipDuplicates: true,
     });
 
-    console.log("✅ Dados importados com sucesso!");
+    console.log("Dados importados com sucesso!");
   } catch (error) {
-    console.error("❌ Erro ao importar dados: ", error);
+    console.error("Erro ao importar dados: ", error);
     process.exit(1);
   } finally {
     await prisma.$disconnect();

@@ -2,66 +2,78 @@ import { getDistance } from "geolib";
 import { Municipio } from "@prisma/client";
 import { prisma } from "../lib/prisma";
 
-type Candidata = {
+export type Candidata = {
   codigo_ibge: number;
   nome: string;
   latitude: number;
   longitude: number;
+  pib: number | null;
+  populacao: number | null;
   estado: {
     uf: string;
   };
-  distancia: number; //Distancia ate o ponto médio
+  distancia: number;
 };
 
 export const getTop10CidadesCandidatas = async (
   cidadeX: Municipio,
   cidadeY: Municipio,
-  distanciaMaxima: number = 200_000 // Padrão: 200 km (está em metros)
+  distanciaMaxima: number = 200_000
 ): Promise<Candidata[]> => {
-  // 1. Calcular o ponto médio entre cidadeX e cidadeY
   const pontoMedio = {
     latitude: (cidadeX.latitude + cidadeY.latitude) / 2,
     longitude: (cidadeX.longitude + cidadeY.longitude) / 2,
   };
 
-  // 2. Buscar cidades válidas com todos os filtros 
+  // Buscar cidades válidas
   const cidadesFiltradas = await prisma.municipio.findMany({
     where: {
       AND: [
         { codigo_ibge: { notIn: [cidadeX.codigo_ibge, cidadeY.codigo_ibge] } },
         { empresasFertilizante: { none: {} } },
-        { camaAviaria: { none: {} } },
-        { rochaFosfato: { none: {} } },
+        { camaAviaria: null },
+        { rochaFosfato: null },
       ],
+    },
+    orderBy: {
+      pib: "desc",
     },
     select: {
       codigo_ibge: true,
       nome: true,
       latitude: true,
       longitude: true,
+      pib: true,
+      populacao: true,
       estado: {
         select: {
           uf: true,
         },
       },
+
+    
+      
     },
   });
 
-  // 3. Calcular distância até o ponto médio e filtar por distancia maxima
-  const candidatas = cidadesFiltradas
-    .map((cidade) => {
-      const distancia = getDistance(
+  // Calcular distância e garantir tipos corretos
+  const candidatas: Candidata[] = cidadesFiltradas
+    .map((cidade) => ({
+      codigo_ibge: cidade.codigo_ibge,
+      nome: cidade.nome,
+      latitude: cidade.latitude,
+      longitude: cidade.longitude,
+      pib: cidade.pib !== null ? Number(cidade.pib) : null,
+      populacao: cidade.populacao !== null ? Number(cidade.populacao) : null,
+      estado: cidade.estado,
+      distancia: getDistance(
         { latitude: cidade.latitude, longitude: cidade.longitude },
         pontoMedio
-      );
-      return { ...cidade, distancia };
-    })
-    .filter((cidade) => cidade.distancia <= distanciaMaxima); // Filtrar por distância máxima
-
-  // 4. Ordenar por distância crescente e pegar as 10 mais próximas
-  const top10 = candidatas
+      ),
+    }))
+    .filter((cidade) => cidade.distancia <= distanciaMaxima)
     .sort((a, b) => a.distancia - b.distancia)
     .slice(0, 10);
 
-  return top10;
+  return candidatas;
 };

@@ -15,6 +15,7 @@ router.get("/mock/rotas", sugerirRotasORS_MOCK);
 // router.get("/sugerir-rodovia", sugerirRotasOSRM);
 router.get("/rota-sugestao", authToken, sugerirRotasUT);
 
+//ESSA É A ROTA DA FUNCIONALIDADE CORE QUE ESTOU ACESSANDO NO INSOMNIA
 router.get("/sugestao-ors", sugerirRotasORS);
 router.get("/cama-aviaria", CamaAviariaController.getCidades);
 router.get("/rocha-fosfato", RochaFosfatoController.getCidades);

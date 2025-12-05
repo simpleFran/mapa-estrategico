@@ -6,7 +6,10 @@ export async function fetchCamaAviaria() {
   if (!res.ok) {
     throw new Error("Network response was not ok");
   }
+
+  // console.log("fetchCamaAviaria Rerresponse:", res.json().then(data => console.log(data)));
   return res.json();
+  
 }
 
 export async function fetchRochaFosfato() {

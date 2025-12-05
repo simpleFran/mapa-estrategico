@@ -3,14 +3,14 @@ version: "3.9"
 services:
   postgres:
     image: postgres:15
-    container_name: postgres
+    container_name: postgres_map
     restart: always
     environment:
       POSTGRES_USER: docker
       POSTGRES_PASSWORD: docker
-      POSTGRES_DB: biofert
+      POSTGRES_DB: biofert_test_restore
     ports:
-      - "5432:5432"
+      - "5434:5432"
     networks:
       - app-network
     volumes:
@@ -35,7 +35,7 @@ services:
     ports:
       - "4000:4000"
     environment:
-      DATABASE_URL: "postgresql://docker:docker@postgres:5432/biofert?schema=public"
+      DATABASE_URL: "postgresql://docker:docker@postgres:5432/biofert_test_restore?schema=public"
       REDIS_URL: "redis://redis:6379"
     networks:
       - app-network

@@ -7,7 +7,7 @@ export default function Legend() {
   const [isOpen, setIsOpen] = useState(true);
 
   return (
-    <div className="absolute bottom-6 left-6 z-[1000]">
+    <div className="absolute bottom-16 left-6 z-[1000]">
       <div className="bg-white/80 backdrop-blur-md border border-gray-300 rounded-xl shadow-xl w-72 transition-all duration-500 ease-in-out">
         {/* Cabeçalho com botão de toggle */}
         <div

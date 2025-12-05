@@ -66,3 +66,5 @@ NOTES.MD
 
 # Vercel
 /frontend/.vercel
+
+node_modules/

@@ -24,6 +24,7 @@ import CitySelectRochaFosfato from "./CitySelectRochaFosfato";
 import Legend from "./Legend";
 import toast from "react-hot-toast";
 import DistanceSelector from "./DistanceSelector";
+import SugestionsBoard from "./SugestoesBoard";
 
 // Ícones personalizados
 const camaAviariaIcon = new Icon({
@@ -98,6 +99,7 @@ export default function Map() {
   }, []);
 
   useEffect(() => {
+    console.log('mudou o max distance para', maxDistance);
     if (cidadeCamaAviaria?.codigo_ibge && cidadeRochaFosfato?.codigo_ibge) {
       setLoading(true);
       setError(null);
@@ -107,7 +109,7 @@ export default function Map() {
         maxDistance * 1000 //Converte Km para metros
       )
         .then((res) => {
-          console.log("- Resposta do backend:", res); // Log para depuração
+          // console.log("- Resposta do backend:", res); // Log para depuração
           setSugestoes(res.sugestoes);
           setRotaCoordenadas(res.rotasCoordenadas); // Atualiza as coordenadas da rota
         })
@@ -169,48 +171,13 @@ export default function Map() {
   const isCamaAviaria = (cidade: any) => {
     return camaAviaria.some((item) => item.codigo_ibge === cidade.codigo_ibge);
   };
+  //funcao auxiliar - verifica se cidade é do tipo Rocha Fosfato
   const isRochaFosfato = (cidade: any) => {
     return rochaFosfato.some((item) => item.codigo_ibge === cidade.codigo_ibge);
   };
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  // function handleMarkerDoubleClick(cidade: any) {
-  //   if (isCamaAviaria(cidade)) {
-  //     if (cidadeCamaAviaria) {
-  //       toast.error(
-  //         "Você já escolheu uma cidade com Cama Aviária. Escolha uma cidade com Rocha de Fosfato."
-  //       );
-  //       return;
-  //     }
-  //     setCidadeCamaAviaria(cidade);
-  //     toast.success(
-  //       `${cidade.nome} - ${cidade.estado} definida como Cama Aviária.`
-  //     );
-  //     return;
-  //   }
-
-  //   if (isRochaFosfato(cidade)) {
-  //     if (cidadeRochaFosfato) {
-  //       toast.error(
-  //         "Você já escolheu uma cidade com Rocha Fosfato. Escolha uma cidade com Cama Aviária."
-  //       );
-  //       return;
-  //     }
-  //     setCidadeRochaFosfato(cidade);
-  //     toast.success(
-  //       `${cidade.nome} - ${cidade.estado} definida como Rocha Fosfato.`
-  //     );
-  //     return;
-  //   }
-
-  //   // Se a cidade não for nem Cama Aviária nem Rocha Fosfato, assumimos que é uma empresa de fertilizantes
-  //   toast.error(
-  //     "Esta cidade possui uma empresa de fertilizantes e não pode ser escolhida."
-  //   );
-  // }
 
   return (
     <>
-      {/* Selects fixos no canto superior esquerdo */}
       <div className="absolute top-4 left-4 z-[1000] bg-white p-4 rounded shadow-md">
         <label className="block mb-2 font-bold">Cidades | Cama Aviária:</label>
         <CitySelectCamaAviaria onChange={setCidadeCamaAviaria} />
@@ -225,6 +192,9 @@ export default function Map() {
             initialDistance={maxDistance}
             onDistanceChange={setMaxDistance}
           />
+        </div>
+        <div className="mt-36">
+          <SugestionsBoard sugestions={sugestoes} />
         </div>
       </div>
 

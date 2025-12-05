@@ -22,7 +22,7 @@ RUN npm install @prisma/client@latest
 RUN npx prisma generate
 
 # Expondo porta da aplicação
-EXPOSE 8081
+EXPOSE 4000
 
 # Copia o entrypoint que vamos criar
 COPY docker-entrypoint.sh /usr/src/app/docker-entrypoint.sh

@@ -8,32 +8,31 @@ datasource db {
 }
 
 model Estado {
-  codigo_uf Int    @id
-  uf        String
-  nome      String
-  latitude  Float
-  longitude Float
-  regiao    String
-
+  codigo_uf  Int         @id
+  uf         String
+  nome       String
+  latitude   Float
+  longitude  Float
+  regiao     String
   municipios Municipio[]
 }
 
 model Municipio {
-  codigo_ibge  Int     @id
-  nome         String
-  latitude     Float
-  longitude    Float
-  capital      Int?
-  siafi_id     Int?
-  ddd          Int?
-  fuso_horario String?
-  codigo_uf    Int
-
-  estado Estado @relation(fields: [codigo_uf], references: [codigo_uf])
-
-  camaAviaria          CamaAviaria[]
-  rochaFosfato         RochaFosfato[]
+  codigo_ibge          Int                   @id
+  nome                 String
+  latitude             Float
+  longitude            Float
+  capital              Int?
+  siafi_id             Int?
+  ddd                  Int?
+  fuso_horario         String?
+  codigo_uf            Int
+  pib                  Decimal?              @db.Decimal(15, 3)
+  populacao            BigInt?
+  camaAviaria          CamaAviaria?
   empresasFertilizante EmpresaFertilizante[]
+  estado               Estado                @relation(fields: [codigo_uf], references: [codigo_uf])
+  rochaFosfato         RochaFosfato?
 }
 
 model CamaAviaria {
@@ -53,4 +52,21 @@ model EmpresaFertilizante {
   nome        String
   municipioId Int
   municipio   Municipio @relation(fields: [municipioId], references: [codigo_ibge])
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model mun_pib {
+  id_municipio BigInt?
+  pib          Decimal? @db.Decimal(15, 3)
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model mun_pop {
+  id_municipio BigInt?
+  nome         String?
+  pop          BigInt?
+
+  @@ignore
 }

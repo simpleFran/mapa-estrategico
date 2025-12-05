@@ -136,7 +136,7 @@ export const sugerirRotasORS = async (req: Request, res: Response) => {
     }
 
     const route = rota.routes[0];
-    console.log("DEBUG rota principal:", JSON.stringify(route, null, 2));
+    // console.log("DEBUG rota principal:", JSON.stringify(route, null, 2));
 
     if (!route || !route.geometry) {
       console.error("Rota malformada:", JSON.stringify(route, null, 2));
@@ -147,7 +147,7 @@ export const sugerirRotasORS = async (req: Request, res: Response) => {
     const distanciaTotal = route.summary?.distance ?? 0;
     const duration = route.summary?.duration ?? 0;
 
-    // Decodificar a geometria com o polyline
+    // geometria com o polyline
     const coordenadas = polyline.decode(route.geometry);
     // console.log("Coordenadas decodificadas:", coordenadas);
 
@@ -223,9 +223,20 @@ export const sugerirRotasORS = async (req: Request, res: Response) => {
       (cidade): cidade is NonNullable<typeof cidade> => cidade !== null
     );
 
+    // const melhores = sugestoes
+    //   .sort((a, b) => a.distancia - b.distancia)
+    //   .slice(0, 3);
+
     const melhores = sugestoes
-      .sort((a, b) => a.distancia - b.distancia)
+      .sort((a, b) => {
+        if (a.pib === null) return 1;
+        if (b.pib === null) return -1;
+
+        return b.pib - a.pib
+
+      })
       .slice(0, 3);
+
 
     res.json({
       origem: cidadeX,
@@ -234,6 +245,7 @@ export const sugerirRotasORS = async (req: Request, res: Response) => {
       duration,
       pontoMedio,
       sugestoes: melhores,
+      test: "Ola test",
       rotasCoordenadas: coordenadas
     });
   } catch (error: any) {
