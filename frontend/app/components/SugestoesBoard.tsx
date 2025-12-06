@@ -35,6 +35,7 @@ export default function SugestionsBoard({
             })} <span className="text-xs"> (x 1.000)</span>
           </p>
           <p>População: {city.populacao.toLocaleString("pt-BR")}</p>
+          <p>Distância: {city.distancia.toLocaleString("pt-BR")} km</p>
         </div>
       ))}
     </div>
