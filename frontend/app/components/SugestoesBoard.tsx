@@ -5,7 +5,7 @@ interface Sugestion {
   estado: { uf: string };
   pib: number | null;
   populacao: number | null;
-  distancia: number; // vem em km no seu código atual
+  distancia: number; // vem em km
 }
 
 export default function SugestionsBoard({
@@ -38,7 +38,9 @@ export default function SugestionsBoard({
             : "Não informada";
 
         const distanciaFormatada =
-          city.distancia != null ? city.distancia.toLocaleString("pt-BR") : "–";
+          city.distancia != null
+            ? (city.distancia / 1000).toLocaleString("pt-BR")
+            : "–";
 
         return (
           <div key={idx} className="border-t border-white/40 py-2">
@@ -52,7 +54,7 @@ export default function SugestionsBoard({
 
             <p>População: {populacaoFormatada}</p>
 
-            <p>Distância: {distanciaFormatada} km</p>
+            <p>Distância: {distanciaFormatada  } km</p>
           </div>
         );
       })}

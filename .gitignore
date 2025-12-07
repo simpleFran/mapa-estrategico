@@ -11,6 +11,9 @@
 # Build/output
 /backend/dist
 
+# pasta scripts_legacy
+/backend/scripts_legacy
+
 # Env files
 /backend/.env
 /backend/.env.local
