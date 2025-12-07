@@ -2,13 +2,20 @@
 
 import { useEffect, useState } from "react";
 
+type Props = {
+  onSelecionar: (origemId: number, destinoId: number) => void;
+};
+type Cidade = {
+  id: number;
+  nome: string;
+  estado: string;
+};
+
 export default function MapFilters({
   onSelecionar,
-}: {
-  onSelecionar: (origemId: number, destinoId: number) => void;
-}) {
-  const [camas, setCamas] = useState<any[]>([]);
-  const [rochas, setRochas] = useState<any[]>([]);
+}: Props) {
+  const [camas, setCamas] = useState<Cidade[]>([]);
+  const [rochas, setRochas] = useState<Cidade[]>([]);
   const [origemId, setOrigemId] = useState<number | null>(null);
   const [destinoId, setDestinoId] = useState<number | null>(null);
 
@@ -25,7 +32,7 @@ export default function MapFilters({
     if (origemId && destinoId) {
       onSelecionar(origemId, destinoId);
     }
-  }, [origemId, destinoId]);
+  }, [origemId, destinoId,onSelecionar]);
 
   return (
     <div className="p-4 bg-white shadow rounded flex gap-4 z-50 absolute top-4 left-4">

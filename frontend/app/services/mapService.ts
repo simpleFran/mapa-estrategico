@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-const BASE_URL = "http://localhost:4000/api"; // URL base da AP
+const BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api";
 
 export async function fetchCamaAviaria() {
   const res = await fetch(`${BASE_URL}/cama-aviaria`);
@@ -9,7 +10,7 @@ export async function fetchCamaAviaria() {
 
   // console.log("fetchCamaAviaria Rerresponse:", res.json().then(data => console.log(data)));
   return res.json();
-  
+
 }
 
 export async function fetchRochaFosfato() {
@@ -35,8 +36,7 @@ export async function fetchSugestoes(
 ) {
   try {
     const res = await fetch(
-      `${BASE_URL}/sugestao-ors?cidadeXId=${origemId}&cidadeYId=${destinoId}&maxDistance=${
-        maxDistance || ""
+      `${BASE_URL}/sugestao-ors?cidadeXId=${origemId}&cidadeYId=${destinoId}&maxDistance=${maxDistance || ""
       }`,
       {
         headers: {

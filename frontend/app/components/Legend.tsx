@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
+import Image from "next/image";
 
 export default function Legend() {
   const [isOpen, setIsOpen] = useState(true);
@@ -32,7 +33,7 @@ export default function Legend() {
         >
           <ul className="space-y-3 text-gray-700 text-sm">
             <li className="flex items-center space-x-3">
-              <img
+              <Image
                 src="/icons/cama-aviaria-icon.png"
                 alt="Cama Aviária"
                 className="w-6 h-6 rounded-md border border-gray-300 shadow-sm"
@@ -40,7 +41,7 @@ export default function Legend() {
               <span className="tracking-wide">Cama Aviária</span>
             </li>
             <li className="flex items-center space-x-3">
-              <img
+              <Image
                 src="/icons/rocha-fosfato-icon.png"
                 alt="Rocha Fosfato"
                 className="w-6 h-6 rounded-md border border-gray-300 shadow-sm"
@@ -48,7 +49,7 @@ export default function Legend() {
               <span className="tracking-wide">Rocha Fosfato</span>
             </li>
             <li className="flex items-center space-x-3">
-              <img
+              <Image
                 src="/icons/fertilizante-icon.png"
                 alt="Fertilizantes"
                 className="w-6 h-6 rounded-md border border-gray-300 shadow-sm"
@@ -56,7 +57,7 @@ export default function Legend() {
               <span className="tracking-wide">Fertilizantes</span>
             </li>
             <li className="flex items-center space-x-3">
-              <img
+              <Image
                 src="/icons/sugestao-icon.png"
                 alt="Sugestões"
                 className="w-6 h-6 rounded-md border border-gray-300 shadow-sm"
