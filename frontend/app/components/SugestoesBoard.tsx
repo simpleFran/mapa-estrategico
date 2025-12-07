@@ -28,18 +28,20 @@ export default function SugestionsBoard({
             ? city.pib.toLocaleString("pt-BR", {
                 style: "currency",
                 currency: "BRL",
-                maximumFractionDigits: 0,
+                maximumFractionDigits: 2,
               })
             : "Não informado";
 
         const populacaoFormatada =
           city.populacao != null
-            ? city.populacao.toLocaleString("pt-BR")
+            ? city.populacao.toLocaleString("pt-BR",{
+              maximumFractionDigits: 2,
+            })
             : "Não informada";
 
         const distanciaFormatada =
           city.distancia != null
-            ? (city.distancia / 1000).toLocaleString("pt-BR")
+            ? (city.distancia / 1000).toLocaleString("pt-BR",{maximumFractionDigits: 2,})
             : "–";
 
         return (
