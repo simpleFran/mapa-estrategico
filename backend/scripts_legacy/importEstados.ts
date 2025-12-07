@@ -1,7 +1,7 @@
+import csv from "csv-parser";
 import fs from "fs";
 import path from "path";
-import csv from "csv-parser";
-import { PrismaClient } from "@prisma/client";
+import { prisma} from '../lib/prisma';
 
 type EstadoCSV = {
   codigo_uf: string;
