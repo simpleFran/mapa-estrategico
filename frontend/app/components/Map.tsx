@@ -67,39 +67,56 @@ export default function Map() {
   const [error, setError] = useState<string | null>(null);
   const [maxDistance, setMaxDistance] = useState(200); // Valor inicial: 200 km
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [markersLoading, setMarkersLoading] = useState(true);
+
   useEffect(() => {
-    fetchCamaAviaria().then((data) => {
-      setCamaAviaria(data);
-    });
+    async function carregarCamadas() {
+      try {
+        setMarkersLoading(true);
 
-    fetchRochaFosfato().then((data) => {
-      // console.log("Dados de Rocha Fosfato:", data);
-      setRochaFosfato(data);
-    });
+        const [cama, rocha, ferts] = await Promise.all([
+          fetchCamaAviaria(),
+          fetchRochaFosfato(),
+          fetchEmpresasFertilizantes(),
+        ]);
 
-    fetchEmpresasFertilizantes().then((dados) => {
-      const agrupadas = dados.reduce((acc: any, item: any) => {
-        const key = `${item.latitude}-${item.longitude}`;
-        if (!acc[key]) {
-          acc[key] = {
-            cidade: item.cidade,
-            uf: item.uf,
-            latitude: item.latitude,
-            longitude: item.longitude,
-            empresas: [],
-          };
-        }
-        acc[key].empresas.push(item.nome);
-        return acc;
-      }, {});
-      setFertilizantes(Object.values(agrupadas));
-    });
+        setCamaAviaria(cama);
+        setRochaFosfato(rocha);
 
-    fetchCidadesOrigemDestino().then(setCidadesOrigemDestino);
+        const agrupadas = ferts.reduce((acc: any, item: any) => {
+          const key = `${item.latitude}-${item.longitude}`;
+          if (!acc[key]) {
+            acc[key] = {
+              cidade: item.cidade,
+              uf: item.uf,
+              latitude: item.latitude,
+              longitude: item.longitude,
+              empresas: [],
+            };
+          }
+          acc[key].empresas.push(item.nome);
+          return acc;
+        }, {});
+        setFertilizantes(Object.values(agrupadas));
+
+        // se você ainda precisar disso:
+        const cidades = await fetchCidadesOrigemDestino();
+        setCidadesOrigemDestino(cidades);
+      } catch (err) {
+        console.error("Erro ao carregar camadas do mapa:", err);
+        toast.error("Erro ao carregar dados iniciais do mapa.");
+      } finally {
+        setMarkersLoading(false);
+      }
+    }
+
+    void carregarCamadas();
   }, []);
 
+
   useEffect(() => {
-    console.log('mudou o max distance para', maxDistance);
+    console.log("mudou o max distance para", maxDistance);
     if (cidadeCamaAviaria?.codigo_ibge && cidadeRochaFosfato?.codigo_ibge) {
       setLoading(true);
       setError(null);
@@ -199,6 +216,17 @@ export default function Map() {
       </div>
 
       <Legend />
+
+      {markersLoading && (
+        <div className="absolute inset-0 z-[900] flex items-center justify-center pointer-events-none">
+          <div className="flex flex-col items-center gap-2 bg-white/80 backdrop-blur-sm px-4 py-3 rounded-lg shadow">
+            <div className="h-6 w-6 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin" />
+            <p className="text-xs text-gray-700">
+              Carregando camadas do mapa...
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Mapa */}
       <MapContainer

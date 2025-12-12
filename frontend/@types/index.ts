@@ -6,7 +6,6 @@ export type MapPoint = {
   type: "cama" | "rocha";
 };
 
-// types.ts ou direto no SearchPanel
 export type Cidade = {
   codigo_ibge: number;
   nome: string;

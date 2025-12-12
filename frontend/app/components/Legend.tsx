@@ -37,6 +37,8 @@ export default function Legend() {
                 src="/icons/cama-aviaria-icon.png"
                 alt="Cama Aviária"
                 className="w-6 h-6 rounded-md border border-gray-300 shadow-sm"
+                width={6}
+                height={6}
               />
               <span className="tracking-wide">Cama Aviária</span>
             </li>
@@ -45,6 +47,8 @@ export default function Legend() {
                 src="/icons/rocha-fosfato-icon.png"
                 alt="Rocha Fosfato"
                 className="w-6 h-6 rounded-md border border-gray-300 shadow-sm"
+                width={6}
+                height={6}
               />
               <span className="tracking-wide">Rocha Fosfato</span>
             </li>
@@ -53,6 +57,8 @@ export default function Legend() {
                 src="/icons/fertilizante-icon.png"
                 alt="Fertilizantes"
                 className="w-6 h-6 rounded-md border border-gray-300 shadow-sm"
+                width={6}
+                height={6}
               />
               <span className="tracking-wide">Fertilizantes</span>
             </li>
@@ -61,6 +67,8 @@ export default function Legend() {
                 src="/icons/sugestao-icon.png"
                 alt="Sugestões"
                 className="w-6 h-6 rounded-md border border-gray-300 shadow-sm"
+                width={6}
+                height={6}
               />
               <span className="tracking-wide">Sugestões de Rota</span>
             </li>
