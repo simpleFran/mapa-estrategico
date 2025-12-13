@@ -2,7 +2,8 @@
 
 ![Mapa geral](screenshots/screen-mapa-geral.png)
 
-Aplicação web interativa desenvolvida como apoio à tomada de decisão estratégica logística para uma empresa do setor de Biotecnologia e Insumos Agrícolas, com foco na produção de biofertilizantes.
+Aplicação web interativa desenvolvida como apoio à tomada de decisão estratégica logística para uma empresa do setor de Biotecnologia e Insumos Agrícolas, com foco na produção de biofertilizantes. **(Obs.: Os municípios aqui utilizados, bem como o nome das empresas de fertilizantes, estão mockados, devido à estratégia da empresa contratante.)**
+
 
 O sistema integra dados geográficos, econômicos e logísticos para sugerir localizações estratégicas para a instalação de novas plantas industriais, considerando critérios reais de negócio.
 
@@ -107,6 +108,7 @@ mapa-estrategico/
 └── README.md
 
 🧩 Stack Tecnológica
+
 Backend
 
 Node.js
