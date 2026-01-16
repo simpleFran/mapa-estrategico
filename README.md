@@ -47,7 +47,7 @@ Calcula:
 
 A rota rodoviária real entre essas duas cidades
 
-Um ponto médio logístico ao longo da rota
+Um PONTO MÉDIO logístico AO LONGO DA ROTA
 
 A partir desse ponto médio, a aplicação:
 
@@ -89,6 +89,11 @@ Mapa interativo exibindo as camadas de municípios com cama aviária, rocha fosf
 🔍 Seleção de cidades de origem e destino
 ![Seleção de cidades](screenshots/screen-selecao-origem-destino.png)
 Interface para seleção das cidades fornecedoras dos insumos.
+    Interação direta no mapa 
+Clique duplo em:
+a- 1 cidade com Cama Aviária (Ex.: Chapecó - SC)
+b- 1 cidade com Rocha de Fosfato (Ex.: Erechim - RS)
+c- a aplicação dará o resultado (baseada nos critérios citados acima) de 3 cidades mais próximas do ponto médio da rota traçada.
 
 🚚 Rota rodoviária calculada
 ![Rota rodoviária](screenshots/screen-rota-principal.png)
