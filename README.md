@@ -88,11 +88,17 @@ Mapa interativo exibindo as camadas de municípios com cama aviária, rocha fosf
 
 🔍 Seleção de cidades de origem e destino
 ![Seleção de cidades](screenshots/screen-selecao-origem-destino.png)
+
 Interface para seleção das cidades fornecedoras dos insumos.
+
     Interação direta no mapa 
+
 Clique duplo em:
+
 a- 1 cidade com Cama Aviária (Ex.: Chapecó - SC)
+
 b- 1 cidade com Rocha de Fosfato (Ex.: Erechim - RS)
+
 c- a aplicação dará o resultado (baseada nos critérios citados acima) de 3 cidades mais próximas do ponto médio da rota traçada.
 
 🚚 Rota rodoviária calculada
@@ -151,7 +157,6 @@ Pré-requisitos
 
 Node.js 18+
 
-Docker (opcional para ambiente local)
 
 Conta no OpenRouteService (API Key)
 
