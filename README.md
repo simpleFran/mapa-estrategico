@@ -161,14 +161,21 @@ Node.js 18+
 Conta no OpenRouteService (API Key)
 
 Backend
+
 cd backend
+
 npm install
+
 npx prisma generate
+
 npm run dev
 
 Frontend
+
 cd frontend
+
 npm install
+
 npm run dev
 
 
